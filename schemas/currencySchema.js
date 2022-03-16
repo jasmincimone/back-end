@@ -1,10 +1,13 @@
 const mongoose = require('mongoose')
 
 const currencySchema = new mongoose.Schema({
-    currencyCode: {type: String, required: true},
-    userID: {type: String, required: true},
+    created_by: {type: String, required: true},
+    created_at: {type: Date, default: Date.now},
+    favoriteCurrencies_title: {type: String, required: true},
+    favoriteCurrencies_content: {type: String, required: true},
 })
 
-const currency = mongoose.model('Currency', currencySchema)
 
-module.exports = currency
+const currencyModel = mongoose.model('Currency', currencySchema)
+
+module.exports = currencyModel
