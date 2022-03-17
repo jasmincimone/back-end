@@ -44,7 +44,6 @@ authRouter.post('/register', async(req ,res)=>{
 authRouter.post('/login', (req, res)=>{
     let username = req.body.username
     let password = req.body.password
-
     //TODO Make DataValidation Middleware LATER
     if (!password || !username){
         res.status(400).json({message: "Please have a username AND password"})
