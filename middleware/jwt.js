@@ -5,16 +5,20 @@ function generateAccessToken(username){
 }
 
 function authenticateToken(req, res, next){
-    const authHeader = req.get('Authorization')
+    const token = req.cookies.Authorization
 
-    if(authHeader === null){
+    if(token === null){
         res.status(403).json({message: 'FORBIDDEN.'})
     
     }
-    jwt.verify(authHeader, process.env.JWT_SECRET, (err, user) => {
+    
+    const decrypt = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if(err){
             res.status(403).json({messsage: 'BAD LOGIN.'})
-        }next()
+        }
+        req.user = decrypt 
+
+        next()
     })
 }
 

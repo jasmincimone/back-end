@@ -35,9 +35,6 @@ authRouter.post('/register', async(req ,res)=>{
         if(result === undefined || result === null){
             res.status(400).json({message: "Please make a unique user"})
         }
-        let token = jwt.sign(username, process.env.JWT_SECRET)
-        res.setHeader('Authorization', token)
-        res.status(200).json({data: result, token: token})
     })
 })
 
@@ -56,30 +53,23 @@ authRouter.post('/login', (req, res)=>{
         if(result === null || result === undefined){
             res.status(404).json({message: "User Not Found"})
         }
-        bcrypt.compare(password, result.password, (error, matching)=>{
+        let password = req.body.password
+        bcrypt.compare(password, result.password, async(error, matching)=>{
             if(error){
                 res.status(403).json({message: error.message})
             }
-            if(matching === false){
-                res.status(403).json({message: "Either username or password is incorrect"})
+            else {
+            let token = jwt.sign(result.toObject(), process.env.JWT_SECRET, {expiresIn: 9000000})
+            res.cookie("Authorization", token, { path: "/", expires: new Date(Date.now() + 9000000)}, "/" )
+            return await res.send({jwt: token})
             }
-            let token = jwt.sign(username, process.env.JWT_SECRET)
-            res.cookie('Authorization', token, "/")
-            res.status(200).json({data: result, token: token})
         })
+
     })
 })
 
-// authRouter.get('/', authenticateToken, (req, res)=>{
-//     User.find((error, result)=>{
-//         if(error){
-//             res.status(404).json({message: error.message})
-//         }
-//         if(result === null || result === undefined || result === []){
-//             res.status(404).json({message: "NOT FOUND"})
-//         }
-//         res.status(200).json({data: result})
-//     })
-// })
+authRouter.post('/logout', (req, res) => {
+    
+})
 
 module.exports = authRouter

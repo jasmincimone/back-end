@@ -17,12 +17,12 @@ const authRouter = require('./routes/authRoutes')
 
 // MIDDLE WARES!!!
 app.use(cors({
-    origin: "*",
+    origin: true,
     credentials: true
 }))
 app.use(bodyParser.json())
 app.use(morgan('dev'))
-app.use(cookieParser)
+app.use(cookieParser(`${process.env.JWT_SECRET}`))
 
 // ROUTES
 app.use('/trade', tradeRouter)
