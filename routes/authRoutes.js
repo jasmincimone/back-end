@@ -2,6 +2,7 @@ const express = require('express')
 const authRouter = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 
 const User = require('../schemas/userSchema')
 const authenticateToken = require('../middleware/jwt')
@@ -18,11 +19,6 @@ authRouter.post('/register', async(req ,res)=>{
     let username = user.username
     let salt = Number(process.env.SALT)
 
-    //TODO Make DataValidation Middleware LATER
-    if (!password || !user.username){
-        res.status(400).json({message: "Please have a username AND password"})
-    }
-
     // TODO Make helper
     let hashedPassword = await bcrypt.hash(password, salt)
     user.password = hashedPassword
@@ -32,8 +28,8 @@ authRouter.post('/register', async(req ,res)=>{
         if(error){
             res.status(400).json({message: error.message})
         }
-        if(result === undefined || result === null){
-            res.status(400).json({message: "Please make a unique user"})
+        else{
+            res.status(201).json({users: result})
         }
     })
 })
@@ -66,10 +62,6 @@ authRouter.post('/login', (req, res)=>{
         })
 
     })
-})
-
-authRouter.post('/logout', (req, res) => {
-    
 })
 
 module.exports = authRouter

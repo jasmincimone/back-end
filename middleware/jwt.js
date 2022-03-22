@@ -12,7 +12,7 @@ function authenticateToken(req, res, next){
     
     }
     
-    const decrypt = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    const decrypt = jwt.verify(Authorization, process.env.JWT_SECRET, (err, user) => {
         if(err){
             res.status(403).json({messsage: 'BAD LOGIN.'})
         }

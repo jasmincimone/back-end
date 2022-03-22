@@ -2,13 +2,35 @@ const express = require('express')
 const Currency = require('../schemas/currencySchema')
 const jwt = require('jsonwebtoken')
 const { authenticateToken } = require('../middleware/jwt')
+
+const User = require('../schemas/userSchema')
  
  // Create the Router
  const tradeRouter = express.Router()
  
  // Create the Routes
- tradeRouter.get('/', (req, res) => {
-     res.send('FETCH CURRENCY DATA')
+ tradeRouter.get('/', authenticateToken, (req, res) => {
+     User.findById({_id: req.user._id}, (error, result) => {
+         if(error){
+             res.status(403).json({message: error.message})
+         }
+         else{
+             res.status(200).json({Logged_In: result})
+         }
+     })
+ })
+
+ tradeRouter.put('/:id', authenticateToken, (req,res) => {
+    let newsId = req.params.id
+    console.log(req.user)
+    User.findByIdAndUpdate({_id: req.user._id}, {$addToSet: {favorites: newsId}}, (error, faves) => {
+        if(error){
+            res.status(403).json({message: "ERROR"})
+        }
+        else{
+            res.send('FAVORITED <3')
+        }
+    })
  })
  
 
@@ -38,12 +60,8 @@ const { authenticateToken } = require('../middleware/jwt')
         res.status(200).json({message: currency})
     })
 })
- 
- tradeRouter.put("/:id", (req, res)=>{
-     res.send('update list of watched currencies by userID')
- })
 
- tradeRouter.delete("/:id", (req, res)=>{
+ tradeRouter.delete("/:id", authenticateToken, (req, res)=>{
      res.send('delete list of watched currencies by userID')
  })
  

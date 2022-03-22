@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const mongooseConnect = require('./config')
 const tradeRouter = require('./routes/tradeRoutes')
+const logoutRoute = require('./routes/logoutRoute')
 const helmet = require('helmet')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -25,8 +26,9 @@ app.use(morgan('dev'))
 app.use(cookieParser(`${process.env.JWT_SECRET}`))
 
 // ROUTES
-app.use('/trade', tradeRouter)
+app.use('/mynews', tradeRouter)
 app.use('/auth', authRouter)
+app.use('/logout', logoutRoute)
 
 // CREATE THE PORT
 const PORT = process.env.PORT || 8000
