@@ -1,8 +1,9 @@
-FXDaydreams
+DAYDREAMFX.
 
-BACK-END for Trading Indicator App. 
+BACK-END for Trading Indicator App: DAYDREAMFX. 
 
-# Blog App API
+Hosted URL:
+
 ## Tech Stack
     -Server: Node, Express 
 
