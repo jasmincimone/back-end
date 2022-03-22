@@ -64,7 +64,7 @@ authRouter.post('/login', (req, res)=>{
                 res.status(403).json({message: "Either username or password is incorrect"})
             }
             let token = jwt.sign(username, process.env.JWT_SECRET)
-            res.setHeader('Authorization', token)
+            res.cookie('Authorization', token, "/")
             res.status(200).json({data: result, token: token})
         })
     })

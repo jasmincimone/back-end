@@ -6,6 +6,7 @@ const tradeRouter = require('./routes/tradeRoutes')
 const helmet = require('helmet')
 const morgan = require('morgan')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 // STEP ONE - Create the App
 const app = express()
 // STEP TWO - Configure the App
@@ -16,10 +17,12 @@ const authRouter = require('./routes/authRoutes')
 
 // MIDDLE WARES!!!
 app.use(cors({
-    origin: "*"
+    origin: "*",
+    credentials: true
 }))
 app.use(bodyParser.json())
 app.use(morgan('dev'))
+app.use(cookieParser)
 
 // ROUTES
 app.use('/trade', tradeRouter)
