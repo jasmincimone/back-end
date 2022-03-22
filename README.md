@@ -2,7 +2,7 @@ DAYDREAMFX.
 
 BACK-END for Trading Indicator App: DAYDREAMFX. 
 
-Hosted URL:
+Hosted URL: https://dashboard.heroku.com/apps/fullstack-trading-app/deploy/github
 
 ## Tech Stack
     -Server: Node, Express 
